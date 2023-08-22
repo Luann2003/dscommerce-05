@@ -42,7 +42,6 @@ public class OrderDTO {
 			OrderItemDTO itemDto = new OrderItemDTO(item);
 			items.add(itemDto);
 		}
-		
 	}
 
 	public Long getId() {
