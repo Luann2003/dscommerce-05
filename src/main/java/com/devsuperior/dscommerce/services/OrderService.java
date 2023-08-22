@@ -2,8 +2,8 @@ package com.devsuperior.dscommerce.services;
 
 import java.time.Instant;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +33,16 @@ public class OrderService {
 	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private AuthService authService;
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	
 	@Transactional(readOnly = true)
 	public OrderDTO findById(Long id) {
 		Order order = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+		authService.validateSelfOrAdmin(order.getClient().getId());
 		return new OrderDTO(order);
 	}
 
